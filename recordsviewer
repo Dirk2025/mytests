@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records Viewer</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; text-align: left; }
+        .record { margin: 10px 0; font-size: 18px; }
+        .nav-buttons { margin-top: 20px; text-align: center; }
+        button { padding: 10px 15px; font-size: 16px; cursor: pointer; }
+        .more-info { display: none; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Records Viewer</h2>
+        <div id="record-display"></div>
+        <button onclick="toggleMoreInfo()">View More</button>
+        <div id="more-info" class="more-info"></div>
+        <div class="nav-buttons">
+            <button onclick="prevRecord()">⬅ Previous</button>
+            <button onclick="nextRecord()">Next ➡</button>
+        </div>
+    </div>
+    
+    <script>
+        let records = [
+            { "COUNTY": "Sarasota", "TYPE": "Mortgage", "STATUS": "Sold", "SURPLUS": "$459,892.08", "OPENING BID": "$46,108.92", "HIGH BID": "$506,001.00", "ASSESSED": "$503,384.00", "ADDRESS": "2020 Harbourside Dr 446 Bld M-, Longboat Key, FL", "DATE": "2/25/2025 9:00AM", "Matched First Name": "John", "Matched Last Name": "Doe", "Age": "45", "Deceased": "No", "Phone1": "123-456-7890", "Phone2": "234-567-8901", "Phone3": "345-678-9012", "Phone4": "456-789-0123", "Phone5": "567-890-1234", "Phone6": "678-901-2345", "Phone7": "789-012-3456", "Email1": "john.doe@example.com", "Email2": "johndoe@another.com", "Relative1 Name": "Jane Doe", "Relative1 Age": "40", "Relative1 Phone1": "890-123-4567", "Relative1 Phone2": "901-234-5678", "Relative1 Phone3": "012-345-6789", "Relative1 Phone4": "123-456-7890", "Relative1 Phone5": "234-567-8901", "Relative2 Name": "James Doe", "Relative2 Age": "38", "Relative2 Phone1": "345-678-9012", "Relative2 Phone2": "456-789-0123", "Relative2 Phone3": "567-890-1234", "Relative2 Phone4": "678-901-2345", "Relative2 Phone5": "789-012-3456", "Relative3 Name": "Jill Doe", "Relative3 Age": "35", "Relative3 Phone1": "890-123-4567" }
+        ];
+        
+        let currentIndex = 0;
+        let moreInfoVisible = false;
+        
+        function displayRecord() {
+            const record = records[currentIndex];
+            let basicInfo = "";
+            let moreInfo = "";
+            
+            const keysToShow = ["COUNTY", "TYPE", "STATUS", "SURPLUS", "OPENING BID", "HIGH BID", "ASSESSED", "ADDRESS", "DATE", "Matched First Name", "Matched Last Name", "Age", "Deceased", "Phone1", "Phone2", "Phone3", "Phone4", "Phone5", "Phone6", "Phone7", "Email1", "Email2"];
+            const moreKeys = Object.keys(record).filter(key => !keysToShow.includes(key));
+            
+            keysToShow.forEach(key => {
+                basicInfo += `<div class='record'><strong>${key}:</strong> ${record[key]}</div>`;
+            });
+            
+            moreKeys.forEach(key => {
+                moreInfo += `<div class='record'><strong>${key}:</strong> ${record[key]}</div>`;
+            });
+            
+            document.getElementById("record-display").innerHTML = basicInfo;
+            document.getElementById("more-info").innerHTML = moreInfo;
+        }
+        
+        function prevRecord() {
+            currentIndex = (currentIndex - 1 + records.length) % records.length;
+            displayRecord();
+        }
+        
+        function nextRecord() {
+            currentIndex = (currentIndex + 1) % records.length;
+            displayRecord();
+        }
+        
+        function toggleMoreInfo() {
+            const moreInfoDiv = document.getElementById("more-info");
+            moreInfoVisible = !moreInfoVisible;
+            moreInfoDiv.style.display = moreInfoVisible ? "block" : "none";
+        }
+        
+        window.onload = displayRecord;
+    </script>
+</body>
+</html>
